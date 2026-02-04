@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual Environments
+venv/
+.env
+*.env
+
+# Jupyter / Experiments
+.ipynb_checkpoints/
+notebooks/
+
+# Logs
+logs/
+*.log
+
+# Data & Models
+data/
+models/
+*.pkl
+*.joblib
+*.h5
+
+# ML Tools
+mlruns/
+wandb/
+
+# OS / IDE
+.DS_Store
+.vscode/
+.idea/
+*.swp
