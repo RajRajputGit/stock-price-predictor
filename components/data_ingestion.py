@@ -1,0 +1,27 @@
+import yfinance as yf
+import numpy as np
+import pandas as pd 
+import os 
+from datetime import datetime
+from logger import logger
+
+class DataIngestionConfig:
+    def __init__(self):
+        self.stock_symbol = input("Enter Stock Ticker Symbol (e.g., AAPL for Apple Inc.): ")
+        self.start_date = datetime.strptime(input("Enter Start Date (DD-MM-YYYY): "), "%d-%m-%Y")
+        self.end_date = datetime.strptime(input("Enter End Date (DD-MM-YYYY): "), "%d-%m-%Y")
+        os.makedirs("data",exist_ok=True)
+
+class DataIngestion:
+    def __init__(self):
+        logger.info("Data Ingestion component initialized.")
+        self.config = DataIngestionConfig()
+
+    def fetch_data(self):
+        logger.info("Fetching stock data for symbol {0} from date {1} to date {2}".format(self.config.stock_symbol,self.config.start_date,self.config.end_date))
+        df = yf.download(self.config.stock_symbol,start=self.config.start_date,end=self.config.end_date)
+        df.to_csv(f"data/{self.config.stock_symbol}_stockdata.csv")
+
+if __name__ == "__main__":
+    data_ingestion = DataIngestion()
+    data_ingestion.fetch_data()
