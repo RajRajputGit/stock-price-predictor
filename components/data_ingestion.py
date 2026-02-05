@@ -4,6 +4,7 @@ import pandas as pd
 import os 
 from datetime import datetime
 from logger import logger
+from components.data_validate import DataValidation
 
 class DataIngestionConfig:
     def __init__(self):
@@ -17,11 +18,18 @@ class DataIngestion:
         logger.info("Data Ingestion component initialized.")
         self.config = DataIngestionConfig()
 
-    def fetch_data(self):
+    def fetch_data(self) -> str : 
         logger.info("Fetching stock data for symbol {0} from date {1} to date {2}".format(self.config.stock_symbol,self.config.start_date,self.config.end_date))
         df = yf.download(self.config.stock_symbol,start=self.config.start_date,end=self.config.end_date)
         df.to_csv(f"data/{self.config.stock_symbol}_stockdata.csv")
+    
+        return f"data/{self.config.stock_symbol}_stockdata.csv"
+
 
 if __name__ == "__main__":
     data_ingestion = DataIngestion()
-    data_ingestion.fetch_data()
+    file_path = data_ingestion.fetch_data()
+
+    data_validation = DataValidation(file_path)
+    validated_file_path = data_validation.validate_data(data_validation.df)
+    logger.info(f"Validated data saved at: {validated_file_path}")
